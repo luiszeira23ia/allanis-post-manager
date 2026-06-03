@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Allanis Post Manager — Autorização TikTok</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 600px; margin: 60px auto; padding: 20px; background: #f5f5f5; }
+  .card { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+  h2 { color: #333; margin-top: 0; }
+  .code-box { background: #f0f0f0; border: 1px solid #ddd; border-radius: 8px; padding: 15px; word-break: break-all; font-family: monospace; font-size: 13px; margin: 15px 0; }
+  .copy-btn { background: #fe2c55; color: white; border: none; padding: 10px 24px; border-radius: 8px; cursor: pointer; font-size: 15px; }
+  .copy-btn:hover { background: #e0254a; }
+  .error { color: #c0392b; }
+  .success { color: #27ae60; font-weight: bold; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>Allanis Post Manager</h2>
+  <div id="content"></div>
+</div>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+  const error = params.get('error');
+  const div = document.getElementById('content');
+
+  if (error) {
+    div.innerHTML = '<p class="error">Erro na autorização: ' + error + '</p>';
+  } else if (code) {
+    div.innerHTML = `
+      <p class="success">✅ Autorização concluída!</p>
+      <p>Copie o código abaixo e cole no terminal onde o script está aguardando:</p>
+      <div class="code-box" id="code">${code}</div>
+      <button class="copy-btn" onclick="copyCode()">Copiar código</button>
+      <p id="copied" style="display:none;color:green">Copiado!</p>
+    `;
+  } else {
+    div.innerHTML = '<p>Nenhum código recebido. Tente o processo de autorização novamente.</p>';
+  }
+
+  function copyCode() {
+    const code = document.getElementById('code').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+      document.getElementById('copied').style.display = 'block';
+    });
+  }
+</script>
+</body>
+</html>
